@@ -1,28 +1,24 @@
 package com.springbootdev.examples.slf4j.mdc.springbootslf4jmdcsupport.filter;
 
+import com.springbootdev.examples.slf4j.mdc.springbootslf4jmdcsupport.config.InterceptorConfig;
 import org.slf4j.MDC;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Component
+//@Component
 public class MdcLogEnhancerFilter implements Filter {
-
-    @Override
-    public void destroy() {
-
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException
     {
-        MDC.put("userId", "www.SpringBootDev.com");
+        MDC.put(InterceptorConfig.X_REQUEST_ID,
+                ((HttpServletRequest) servletRequest).getHeader(InterceptorConfig.X_REQUEST_ID));
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
